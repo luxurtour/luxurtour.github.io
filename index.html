@@ -168,7 +168,7 @@
     .lang-switcher span { color: #ddd; font-size: .8rem; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --gold: #D4AF37; --dark: #05301D; --gray-bg: #f5f6f8; --gray-light: #f0f1f3; --gray-text: #6b7280; --border: #e5e7eb; }
-    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; color: #1a1a1a; background: #fff; overflow-x: hidden; }
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 70px; background: #05301D; backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between; padding: 0 48px; }
     .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
@@ -213,7 +213,7 @@
     /* MODAL */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity .25s; }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal { background: #fff; border-radius: 20px; width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; transform: translateY(24px); transition: transform .3s; position: relative; }
+    .modal { background: #fff; border-radius: 20px; width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; transform: translateY(24px); transition: transform .3s; position: relative; }
     .modal-overlay.open .modal { transform: translateY(0); }
     .modal-hero { position: relative; height: 220px; overflow: hidden; border-radius: 20px 20px 0 0; }
     .modal-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -371,7 +371,7 @@
     /* QUESTIONNAIRE OVERLAY */
     .q-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(5px); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity .25s; }
     .q-overlay.open { opacity: 1; pointer-events: all; }
-    .q-box { background: #fff; border-radius: 20px; width: 100%; max-width: 660px; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; transform: translateY(24px); transition: transform .3s; position: relative; }
+    .q-box { background: #fff; border-radius: 20px; width: 100%; max-width: 660px; max-height: 90vh; overflow-y: auto; transform: translateY(24px); transition: transform .3s; position: relative; }
     .q-overlay.open .q-box { transform: translateY(0); }
     .q-header { padding: 28px 32px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
     .q-header-text h3 { font-size: 1.2rem; font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
@@ -501,203 +501,6 @@
     .mobile-menu a:last-child { border-bottom: none; }
     .mobile-menu a:hover { color: #D4AF37; }
     @media(max-width:768px) { .hamburger { display: flex; } }
-  
-    /* ═══════════════════════════════════════════
-       SMOOTH SCROLL & BASE MOBILE IMPROVEMENTS
-    ═══════════════════════════════════════════ */
-    html {
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-      overscroll-behavior-y: none;
-    }
-    body {
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-y: none;
-    }
-    /* Smooth scroll with offset for fixed nav */
-    :target { scroll-margin-top: 70px; }
-
-    /* Better tap targets on mobile */
-    @media (max-width: 768px) {
-      :target { scroll-margin-top: 64px; }
-      a, button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-    }
-
-    /* ═══════════════════════════════════════════
-       MODAL SCROLLING — MOBILE
-    ═══════════════════════════════════════════ */
-    .modal {
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-    }
-    .q-box {
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-    }
-    .modal-overlay, .q-overlay {
-      overscroll-behavior: contain;
-    }
-
-    /* ═══════════════════════════════════════════
-       MOBILE ≤ 768px COMPREHENSIVE FIXES
-    ═══════════════════════════════════════════ */
-    @media (max-width: 768px) {
-
-      /* — Nav — */
-      nav { padding: 0 16px; height: 60px; }
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      #services, #why, #equipment, #contact { scroll-margin-top: 60px; }
-      .btn-nav.btn-getstarted { display: none; }
-
-      /* — Hero — */
-      #hero { min-height: 100svh; padding-top: 60px; }
-      .hero-brand img { height: 52px !important; }
-      .hero-sub { font-size: 1rem; letter-spacing: .06em; }
-      .hero-desc { font-size: .9rem; margin-bottom: 28px; padding: 0 4px; line-height: 1.7; }
-      .btn-hero { padding: 14px 40px; font-size: .95rem; }
-
-      /* — Sections — */
-      section { padding: 56px 16px; }
-      .sec-head { margin-bottom: 36px; }
-      .sec-head h2 { font-size: clamp(1.55rem, 6vw, 2rem); }
-      .sec-head p { font-size: .9rem; }
-
-      /* — Services grid — */
-      .services-grid { grid-template-columns: 1fr; gap: 14px; }
-      .svc-img { height: 210px; }
-      .svc-body { padding: 20px; }
-      .svc-body h3 { font-size: 1.05rem; }
-
-      /* — Service card custom — */
-      .svc-card-custom-body { padding: 28px 20px 24px; }
-      .svc-card-custom h3 { font-size: 1.1rem; }
-      .svc-card-custom p { font-size: .85rem; }
-
-      /* — Modal — */
-      .modal-overlay { padding: 12px; }
-      .modal { border-radius: 16px; max-height: 94vh; }
-      .modal-hero { height: 160px; border-radius: 16px 16px 0 0; }
-      .modal-hero-title h2 { font-size: 1.1rem; }
-      .modal-body { padding: 20px 16px 24px; }
-      .modal-section-label { font-size: .65rem; }
-      .modal-description { font-size: .875rem; line-height: 1.7; }
-
-      /* — Packs grid — */
-      .packs-grid { grid-template-columns: 1fr; gap: 12px; }
-      .pack-card { padding: 18px 16px; }
-      .pack-features li { font-size: .8rem; }
-
-      /* — Booking panel — */
-      .booking-panel { padding: 20px 16px; }
-      .booking-fields { grid-template-columns: 1fr; gap: 10px; }
-      .booking-fields input[style*="span 2"] { grid-column: span 1 !important; }
-      .booking-panel-header { flex-wrap: wrap; gap: 8px; }
-      .booking-panel-header h4 { font-size: .9rem; }
-      .cal-grid { gap: 2px; }
-      .cal-day { font-size: .75rem; border-radius: 6px; }
-      .cal-day-name { font-size: .65rem; }
-      .time-slots { gap: 6px; }
-      .time-slot { padding: 6px 10px; font-size: .78rem; }
-      .fee-summary { padding: 10px 12px; }
-      .fee-row { font-size: .78rem; }
-      .booking-confirm { padding: 12px; font-size: .85rem; }
-
-      /* — Why grid — */
-      .why-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
-      .why-icon { width: 58px; height: 58px; }
-      .why-icon svg { width: 26px; height: 26px; }
-      .why-item h3 { font-size: .9rem; }
-      .why-item p { font-size: .8rem; }
-
-      /* — Equipment grid — */
-      .eq-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .eq-card { padding: 14px 12px; }
-      .eq-card h4 { font-size: .8rem; }
-      .eq-card ul li { font-size: .75rem; }
-
-      /* — Contact — */
-      .contact-grid { grid-template-columns: 1fr; gap: 16px; }
-      .form-card { padding: 24px 16px; }
-      .form-row { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
-      .fi { padding: 11px 12px; font-size: .85rem; }
-      textarea.fi { min-height: 90px; }
-
-      /* — Footer — */
-      footer { padding: 44px 16px 24px; }
-      .footer-top { grid-template-columns: 1fr; gap: 28px; }
-      .footer-top > div:last-child { display: flex; gap: 32px; }
-      .footer-brand-row img { height: 32px !important; }
-      .footer-desc { font-size: .8rem; }
-
-      /* — Questionnaire — */
-      .q-overlay { padding: 8px; }
-      .q-box { border-radius: 16px; max-height: 96vh; }
-      .q-header {
-        padding: 20px 16px 0;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-      .q-header-text h3 { font-size: 1.05rem; }
-      .q-header-text p { font-size: .8rem; }
-      .q-header > div:last-child {
-        position: absolute;
-        top: 14px;
-        right: 14px;
-        flex-direction: row;
-        align-items: center;
-        gap: 8px;
-      }
-      .q-service-badge { font-size: .65rem; padding: 3px 10px; }
-      .q-body { padding: 16px 16px 20px; gap: 14px; }
-      .q-row { grid-template-columns: 1fr; gap: 12px; }
-      .q-field label { font-size: .75rem; }
-      .q-field input, .q-field select, .q-field textarea { padding: 10px 12px; font-size: .85rem; }
-      .q-footer { padding: 0 16px 20px; flex-direction: column; gap: 8px; }
-      .q-btn-send, .q-btn-reserve { padding: 12px; font-size: .85rem; }
-
-      /* — Clients modal — */
-      #modal-clients-box { width: 96vw !important; border-radius: 16px !important; }
-      #clients-modal-grid { grid-template-columns: repeat(2,1fr) !important; gap: 10px !important; }
-
-      /* — Mobile menu — */
-      .mobile-menu { top: 60px; padding: 16px 20px 24px; }
-      .mobile-menu a { font-size: 1rem; padding: 10px 0; }
-    }
-
-    /* ═══════════════════════════════════════════
-       MOBILE ≤ 480px EXTRA SMALL
-    ═══════════════════════════════════════════ */
-    @media (max-width: 480px) {
-      nav { padding: 0 14px; height: 56px; }
-      #hero { padding-top: 56px; }
-      .mobile-menu { top: 56px; }
-      #services, #why, #equipment, #contact { scroll-margin-top: 56px; }
-
-      section { padding: 48px 14px; }
-      .hero-brand img { height: 44px !important; }
-      .hero-desc { font-size: .82rem; }
-      .btn-hero { padding: 13px 32px; font-size: .88rem; }
-
-      .why-grid { grid-template-columns: 1fr; gap: 24px; }
-
-      .modal-overlay { padding: 0; }
-      .modal { border-radius: 0; max-height: 100vh; height: 100vh; }
-      .modal-hero { height: 140px; border-radius: 0; }
-
-      .q-overlay { padding: 0; }
-      .q-box { border-radius: 0; max-height: 100vh; height: 100vh; }
-
-      #clients-modal-grid { grid-template-columns: 1fr 1fr !important; }
-
-      .packs-grid { gap: 10px; }
-      .eq-grid { grid-template-columns: repeat(2,1fr); }
-
-      footer { padding: 36px 14px 20px; }
-      .footer-top > div:last-child { flex-direction: column; gap: 24px; }
-    }
-
   </style>
   <!-- ═══════════════════════════════════════════════
        PERFORMANCE & CRAWL HINTS
