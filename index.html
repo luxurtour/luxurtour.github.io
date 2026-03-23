@@ -168,7 +168,7 @@
     .lang-switcher span { color: #ddd; font-size: .8rem; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --gold: #D4AF37; --dark: #05301D; --gray-bg: #f5f6f8; --gray-light: #f0f1f3; --gray-text: #6b7280; --border: #e5e7eb; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body { font-family: 'Inter', sans-serif; color: #1a1a1a; background: #fff; overflow-x: hidden; }
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 70px; background: #05301D; backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between; padding: 0 48px; }
     .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
@@ -213,7 +213,7 @@
     /* MODAL */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity .25s; }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal { background: #fff; border-radius: 20px; width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; transform: translateY(24px); transition: transform .3s; position: relative; }
+    .modal { background: #fff; border-radius: 20px; width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; transform: translateY(24px); transition: transform .3s; position: relative; }
     .modal-overlay.open .modal { transform: translateY(0); }
     .modal-hero { position: relative; height: 220px; overflow: hidden; border-radius: 20px 20px 0 0; }
     .modal-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -371,7 +371,7 @@
     /* QUESTIONNAIRE OVERLAY */
     .q-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(5px); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity .25s; }
     .q-overlay.open { opacity: 1; pointer-events: all; }
-    .q-box { background: #fff; border-radius: 20px; width: 100%; max-width: 660px; max-height: 90vh; overflow-y: auto; transform: translateY(24px); transition: transform .3s; position: relative; }
+    .q-box { background: #fff; border-radius: 20px; width: 100%; max-width: 660px; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; transform: translateY(24px); transition: transform .3s; position: relative; }
     .q-overlay.open .q-box { transform: translateY(0); }
     .q-header { padding: 28px 32px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
     .q-header-text h3 { font-size: 1.2rem; font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
@@ -501,7 +501,401 @@
     .mobile-menu a:last-child { border-bottom: none; }
     .mobile-menu a:hover { color: #D4AF37; }
     @media(max-width:768px) { .hamburger { display: flex; } }
-  </style>
+  
+    /* ═══════════════════════════════════════════
+       SMOOTH SCROLL & BASE MOBILE IMPROVEMENTS
+    ═══════════════════════════════════════════ */
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      overscroll-behavior-y: none;
+    }
+    body {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: none;
+    }
+    /* Smooth scroll with offset for fixed nav */
+    :target { scroll-margin-top: 70px; }
+
+    /* Better tap targets on mobile */
+    @media (max-width: 768px) {
+      :target { scroll-margin-top: 64px; }
+      a, button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+    }
+
+    /* ═══════════════════════════════════════════
+       MODAL SCROLLING — MOBILE
+    ═══════════════════════════════════════════ */
+    .modal {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    .q-box {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    .modal-overlay, .q-overlay {
+      overscroll-behavior: contain;
+    }
+
+    /* ═══════════════════════════════════════════
+       MOBILE ≤ 768px COMPREHENSIVE FIXES
+    ═══════════════════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* — Nav — */
+      nav { padding: 0 16px; height: 60px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      #services, #why, #equipment, #contact { scroll-margin-top: 60px; }
+      .btn-nav.btn-getstarted { display: none; }
+
+      /* — Hero — */
+      #hero { min-height: 100svh; padding-top: 60px; }
+      .hero-brand img { height: 52px !important; }
+      .hero-sub { font-size: 1rem; letter-spacing: .06em; }
+      .hero-desc { font-size: .9rem; margin-bottom: 28px; padding: 0 4px; line-height: 1.7; }
+      .btn-hero { padding: 14px 40px; font-size: .95rem; }
+
+      /* — Sections — */
+      section { padding: 56px 16px; }
+      .sec-head { margin-bottom: 36px; }
+      .sec-head h2 { font-size: clamp(1.55rem, 6vw, 2rem); }
+      .sec-head p { font-size: .9rem; }
+
+      /* — Services grid — */
+      .services-grid { grid-template-columns: 1fr; gap: 14px; }
+      .svc-img { height: 210px; }
+      .svc-body { padding: 20px; }
+      .svc-body h3 { font-size: 1.05rem; }
+
+      /* — Service card custom — */
+      .svc-card-custom-body { padding: 28px 20px 24px; }
+      .svc-card-custom h3 { font-size: 1.1rem; }
+      .svc-card-custom p { font-size: .85rem; }
+
+      /* — Modal — */
+      .modal-overlay { padding: 12px; }
+      .modal { border-radius: 16px; max-height: 94vh; }
+      .modal-hero { height: 160px; border-radius: 16px 16px 0 0; }
+      .modal-hero-title h2 { font-size: 1.1rem; }
+      .modal-body { padding: 20px 16px 24px; }
+      .modal-section-label { font-size: .65rem; }
+      .modal-description { font-size: .875rem; line-height: 1.7; }
+
+      /* — Packs grid — */
+      .packs-grid { grid-template-columns: 1fr; gap: 12px; }
+      .pack-card { padding: 18px 16px; }
+      .pack-features li { font-size: .8rem; }
+
+      /* — Booking panel — */
+      .booking-panel { padding: 20px 16px; }
+      .booking-fields { grid-template-columns: 1fr; gap: 10px; }
+      .booking-fields input[style*="span 2"] { grid-column: span 1 !important; }
+      .booking-panel-header { flex-wrap: wrap; gap: 8px; }
+      .booking-panel-header h4 { font-size: .9rem; }
+      .cal-grid { gap: 2px; }
+      .cal-day { font-size: .75rem; border-radius: 6px; }
+      .cal-day-name { font-size: .65rem; }
+      .time-slots { gap: 6px; }
+      .time-slot { padding: 6px 10px; font-size: .78rem; }
+      .fee-summary { padding: 10px 12px; }
+      .fee-row { font-size: .78rem; }
+      .booking-confirm { padding: 12px; font-size: .85rem; }
+
+      /* — Why grid — */
+      .why-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .why-icon { width: 58px; height: 58px; }
+      .why-icon svg { width: 26px; height: 26px; }
+      .why-item h3 { font-size: .9rem; }
+      .why-item p { font-size: .8rem; }
+
+      /* — Equipment grid — */
+      .eq-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .eq-card { padding: 14px 12px; }
+      .eq-card h4 { font-size: .8rem; }
+      .eq-card ul li { font-size: .75rem; }
+
+      /* — Contact — */
+      .contact-grid { grid-template-columns: 1fr; gap: 16px; }
+      .form-card { padding: 24px 16px; }
+      .form-row { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
+      .fi { padding: 11px 12px; font-size: .85rem; }
+      textarea.fi { min-height: 90px; }
+
+      /* — Footer — */
+      footer { padding: 44px 16px 24px; }
+      .footer-top { grid-template-columns: 1fr; gap: 28px; }
+      .footer-top > div:last-child { display: flex; gap: 32px; }
+      .footer-brand-row img { height: 32px !important; }
+      .footer-desc { font-size: .8rem; }
+
+      /* — Questionnaire — */
+      .q-overlay { padding: 8px; }
+      .q-box { border-radius: 16px; max-height: 96vh; }
+      .q-header {
+        padding: 20px 16px 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .q-header-text h3 { font-size: 1.05rem; }
+      .q-header-text p { font-size: .8rem; }
+      .q-header > div:last-child {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+      }
+      .q-service-badge { font-size: .65rem; padding: 3px 10px; }
+      .q-body { padding: 16px 16px 20px; gap: 14px; }
+      .q-row { grid-template-columns: 1fr; gap: 12px; }
+      .q-field label { font-size: .75rem; }
+      .q-field input, .q-field select, .q-field textarea { padding: 10px 12px; font-size: .85rem; }
+      .q-footer { padding: 0 16px 20px; flex-direction: column; gap: 8px; }
+      .q-btn-send, .q-btn-reserve { padding: 12px; font-size: .85rem; }
+
+      /* — Clients modal — */
+      #modal-clients-box { width: 96vw !important; border-radius: 16px !important; }
+      #clients-modal-grid { grid-template-columns: repeat(2,1fr) !important; gap: 10px !important; }
+
+      /* — Mobile menu — */
+      .mobile-menu { top: 60px; padding: 16px 20px 24px; }
+      .mobile-menu a { font-size: 1rem; padding: 10px 0; }
+    }
+
+    /* ═══════════════════════════════════════════
+       MOBILE ≤ 480px EXTRA SMALL
+    ═══════════════════════════════════════════ */
+    @media (max-width: 480px) {
+      nav { padding: 0 14px; height: 56px; }
+      #hero { padding-top: 56px; }
+      .mobile-menu { top: 56px; }
+      #services, #why, #equipment, #contact { scroll-margin-top: 56px; }
+
+      section { padding: 48px 14px; }
+      .hero-brand img { height: 44px !important; }
+      .hero-desc { font-size: .82rem; }
+      .btn-hero { padding: 13px 32px; font-size: .88rem; }
+
+      .why-grid { grid-template-columns: 1fr; gap: 24px; }
+
+      .modal-overlay { padding: 0; }
+      .modal { border-radius: 0; max-height: 100vh; height: 100vh; }
+      .modal-hero { height: 140px; border-radius: 0; }
+
+      .q-overlay { padding: 0; }
+      .q-box { border-radius: 0; max-height: 100vh; height: 100vh; }
+
+      #clients-modal-grid { grid-template-columns: 1fr 1fr !important; }
+
+      .packs-grid { gap: 10px; }
+      .eq-grid { grid-template-columns: repeat(2,1fr); }
+
+      footer { padding: 36px 14px 20px; }
+      .footer-top > div:last-child { flex-direction: column; gap: 24px; }
+    }
+
+  
+    /* ═══════════════════════════════════════════════
+       MOBILE OVERRIDES — Complete compact scaling
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* Global */
+      html, body { font-size: 14px; }
+      section { padding: 40px 14px !important; }
+      .sec-head { margin-bottom: 24px !important; }
+      .sec-head h2 { font-size: 1.35rem !important; margin-bottom: 8px !important; }
+      .sec-head p { font-size: .82rem !important; line-height: 1.55 !important; }
+
+      /* Nav */
+      nav { height: 52px !important; padding: 0 14px !important; }
+      .nav-logo img { height: 24px !important; }
+      #services, #why, #equipment, #contact { scroll-margin-top: 52px !important; }
+      .mobile-menu { top: 52px !important; padding: 12px 16px 20px !important; }
+      .mobile-menu a { font-size: .9rem !important; padding: 9px 0 !important; }
+      .lang-btn { font-size: .78rem !important; }
+
+      /* Hero */
+      #hero { padding-top: 52px !important; }
+      .hero-brand img { height: 42px !important; }
+      .hero-sub { font-size: .82rem !important; margin-bottom: 8px !important; }
+      .hero-desc { font-size: .78rem !important; margin-bottom: 20px !important; line-height: 1.55 !important; padding: 0 4px !important; }
+      .btn-hero { padding: 11px 28px !important; font-size: .82rem !important; }
+      .scroll-mouse-wrap { bottom: 18px; }
+
+      /* Service cards */
+      .services-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
+      .svc-img { height: 170px !important; }
+      .svc-body { padding: 14px 14px 16px !important; }
+      .svc-body h3 { font-size: .92rem !important; margin-bottom: 5px !important; }
+      .svc-body p { font-size: .76rem !important; line-height: 1.5 !important; }
+      .svc-hint { font-size: .7rem !important; margin-top: 10px !important; }
+      .svc-badge { width: 40px !important; height: 40px !important; border-radius: 9px !important; bottom: 10px !important; left: 10px !important; }
+      .svc-badge img { width: 30px !important; height: 30px !important; }
+
+      /* Custom card */
+      .svc-card-custom-body { padding: 22px 16px 20px !important; }
+      .svc-card-custom-icon { width: 42px !important; height: 42px !important; margin-bottom: 14px !important; }
+      .svc-card-custom h3 { font-size: .95rem !important; margin-bottom: 8px !important; }
+      .svc-card-custom p { font-size: .76rem !important; margin-bottom: 16px !important; }
+      .svc-card-custom-tag { font-size: .68rem !important; padding: 3px 9px !important; }
+      .svc-card-custom-btn { padding: 10px 18px !important; font-size: .78rem !important; }
+
+      /* Modals */
+      .modal-overlay { padding: 8px !important; }
+      .modal { max-height: 93vh !important; border-radius: 14px !important; }
+      .modal-hero { height: 130px !important; }
+      .modal-hero-title h2 { font-size: .95rem !important; }
+      .modal-hero-icon { width: 40px !important; height: 40px !important; border-radius: 9px !important; }
+      .modal-hero-icon img { width: 30px !important; height: 30px !important; }
+      .modal-close { width: 30px !important; height: 30px !important; font-size: .9rem !important; top: 10px !important; right: 10px !important; }
+      .modal-body { padding: 16px 14px 20px !important; }
+      .modal-section-label { font-size: .6rem !important; margin-bottom: 6px !important; }
+      .modal-description { font-size: .78rem !important; line-height: 1.6 !important; margin-bottom: 18px !important; }
+      .utility-tag { font-size: .7rem !important; padding: 3px 10px !important; }
+      .modal-utility { gap: 5px !important; margin-bottom: 18px !important; }
+
+      /* Packs */
+      .packs-grid { grid-template-columns: 1fr !important; gap: 8px !important; margin-bottom: 16px !important; }
+      .pack-card { padding: 14px 14px !important; gap: 8px !important; border-radius: 10px !important; }
+      .pack-name { font-size: .82rem !important; }
+      .pack-price { font-size: 1.1rem !important; }
+      .pack-price span { font-size: .75rem !important; }
+      .pack-features { gap: 5px !important; }
+      .pack-features li { font-size: .72rem !important; gap: 6px !important; }
+      .pack-cta { padding: 8px !important; font-size: .76rem !important; border-radius: 6px !important; }
+      .pack-popular { font-size: .58rem !important; padding: 2px 7px !important; }
+
+      /* Booking panel */
+      .booking-panel { padding: 16px 12px !important; border-radius: 12px !important; }
+      .booking-panel-header h4 { font-size: .82rem !important; }
+      .booking-pack-badge { font-size: .65rem !important; }
+      .booking-close-btn { font-size: .75rem !important; }
+      .cal-header { margin-bottom: 8px !important; }
+      .cal-month { font-size: .8rem !important; }
+      .cal-nav { width: 26px !important; height: 26px !important; font-size: .8rem !important; }
+      .cal-grid { gap: 2px !important; margin-bottom: 10px !important; }
+      .cal-day-name { font-size: .6rem !important; }
+      .cal-day { font-size: .7rem !important; border-radius: 5px !important; }
+      .time-label { font-size: .68rem !important; margin-bottom: 6px !important; }
+      .time-slots { gap: 5px !important; margin-bottom: 14px !important; }
+      .time-slot { padding: 5px 9px !important; font-size: .72rem !important; border-radius: 6px !important; }
+      .booking-summary { font-size: .72rem !important; margin-bottom: 10px !important; }
+      .booking-fields { gap: 8px !important; margin-bottom: 8px !important; }
+      .booking-fields input, .booking-fields select { padding: 9px 10px !important; font-size: .78rem !important; border-radius: 6px !important; }
+      .booking-fields input[style*="span 2"] { grid-column: span 1 !important; }
+      .travel-notice { padding: 9px 10px !important; margin-bottom: 8px !important; }
+      .travel-notice p { font-size: .72rem !important; }
+      .storage-addon { padding: 10px 12px !important; margin-bottom: 10px !important; border-radius: 8px !important; }
+      .storage-addon-title { font-size: .78rem !important; }
+      .storage-addon-desc { font-size: .68rem !important; }
+      .storage-addon-price { font-size: .78rem !important; }
+      .fee-summary { padding: 10px 12px !important; margin-bottom: 10px !important; border-radius: 8px !important; }
+      .fee-row { font-size: .72rem !important; }
+      .booking-confirm { padding: 11px !important; font-size: .8rem !important; border-radius: 8px !important; }
+      .booking-success h4 { font-size: .95rem !important; }
+      .booking-success p { font-size: .78rem !important; }
+      .booking-success-icon { width: 48px !important; height: 48px !important; }
+      .booking-success-icon svg { width: 22px !important; height: 22px !important; }
+
+      /* Who We Serve section */
+      #clients { padding: 36px 14px !important; }
+      #clients h2 { font-size: 1.25rem !important; }
+      #clients p { font-size: .8rem !important; }
+      #clients button { padding: 12px 24px !important; font-size: .8rem !important; gap: 7px !important; }
+
+      /* Who We Serve modal */
+      #modal-clients { padding: 8px !important; }
+      #modal-clients-box { width: 96vw !important; border-radius: 14px !important; }
+      #modal-clients-box h2 { font-size: 1.1rem !important; }
+      #modal-clients-box p { font-size: .75rem !important; }
+      #clients-modal-grid { grid-template-columns: repeat(2,1fr) !important; gap: 8px !important; padding: 16px !important; }
+      #clients-modal-grid > div { padding: 14px 10px !important; border-radius: 10px !important; }
+      #clients-modal-grid h3 { font-size: .75rem !important; margin-bottom: 4px !important; }
+      #clients-modal-grid p { font-size: .65rem !important; }
+      #clients-modal-grid > div > div { width: 40px !important; height: 40px !important; border-radius: 9px !important; margin-bottom: 10px !important; }
+      #clients-modal-grid svg { width: 18px !important; height: 18px !important; }
+
+      /* Why section */
+      .why-grid { grid-template-columns: 1fr 1fr !important; gap: 20px !important; }
+      .why-icon { width: 50px !important; height: 50px !important; margin-bottom: 12px !important; }
+      .why-icon svg { width: 22px !important; height: 22px !important; }
+      .why-item h3 { font-size: .82rem !important; margin-bottom: 6px !important; }
+      .why-item p { font-size: .73rem !important; line-height: 1.5 !important; }
+
+      /* Equipment */
+      .eq-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+      .eq-card { padding: 12px 10px !important; border-radius: 9px !important; }
+      .eq-icon { width: 36px !important; height: 36px !important; border-radius: 8px !important; margin-bottom: 10px !important; }
+      .eq-icon svg { width: 18px !important; height: 18px !important; }
+      .eq-card h4 { font-size: .75rem !important; margin-bottom: 7px !important; }
+      .eq-card ul li { font-size: .68rem !important; }
+
+      /* Contact */
+      .contact-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+      .form-card { padding: 18px 14px !important; border-radius: 12px !important; }
+      .form-card h3 { font-size: .9rem !important; margin-bottom: 16px !important; }
+      .form-row { grid-template-columns: 1fr !important; gap: 8px !important; margin-bottom: 8px !important; }
+      .fi { padding: 10px 11px !important; font-size: .8rem !important; border-radius: 7px !important; }
+      textarea.fi { min-height: 80px !important; margin-bottom: 14px !important; }
+      .btn-send { padding: 11px 22px !important; font-size: .82rem !important; border-radius: 7px !important; }
+      .ci-card { padding: 14px 16px !important; border-radius: 10px !important; gap: 12px !important; }
+      .ci-icon { width: 42px !important; height: 42px !important; min-width: 42px !important; border-radius: 9px !important; }
+      .ci-icon svg { width: 18px !important; height: 18px !important; }
+      .ci-text strong { font-size: .78rem !important; }
+      .ci-text span { font-size: .74rem !important; }
+
+      /* Footer */
+      footer { padding: 36px 14px 20px !important; }
+      .footer-top { grid-template-columns: 1fr !important; gap: 24px !important; }
+      .footer-brand-row img { height: 28px !important; }
+      .footer-desc { font-size: .74rem !important; margin-bottom: 14px !important; }
+      .socials svg { width: 18px !important; height: 18px !important; }
+      .fcol h5 { font-size: .78rem !important; margin-bottom: 10px !important; }
+      .fcol ul { gap: 7px !important; }
+      .fcol ul li a { font-size: .74rem !important; }
+      .footer-copy { font-size: .68rem !important; }
+
+      /* Questionnaire */
+      .q-overlay { padding: 6px !important; }
+      .q-box { border-radius: 14px !important; max-height: 95vh !important; }
+      .q-header { padding: 16px 14px 0 !important; flex-direction: row !important; align-items: flex-start !important; gap: 8px !important; position: relative !important; }
+      .q-header-text h3 { font-size: .95rem !important; margin-bottom: 3px !important; }
+      .q-header-text p { font-size: .74rem !important; }
+      .q-service-badge { font-size: .6rem !important; padding: 2px 8px !important; white-space: nowrap !important; }
+      .q-close { width: 28px !important; height: 28px !important; font-size: .85rem !important; flex-shrink: 0 !important; }
+      .q-body { padding: 14px 14px 18px !important; gap: 12px !important; }
+      .q-section-title { font-size: .6rem !important; margin-bottom: -4px !important; }
+      .q-field label { font-size: .72rem !important; }
+      .q-field input, .q-field select, .q-field textarea { padding: 9px 11px !important; font-size: .8rem !important; border-radius: 7px !important; }
+      .q-field textarea { min-height: 70px !important; }
+      .q-row { grid-template-columns: 1fr !important; gap: 10px !important; }
+      .q-divider { margin: 2px 0 !important; }
+      .q-footer { padding: 0 14px 16px !important; gap: 8px !important; flex-direction: column !important; }
+      .q-btn-send, .q-btn-reserve { padding: 11px !important; font-size: .82rem !important; border-radius: 9px !important; }
+      .q-success { padding: 28px 16px !important; }
+      .q-success-icon { width: 50px !important; height: 50px !important; }
+      .q-success h4 { font-size: .95rem !important; }
+      .q-success p { font-size: .78rem !important; }
+    }
+
+    @media (max-width: 380px) {
+      html, body { font-size: 13px; }
+      section { padding: 36px 12px !important; }
+      nav { height: 48px !important; padding: 0 12px !important; }
+      .mobile-menu { top: 48px !important; }
+      #services, #why, #equipment, #contact { scroll-margin-top: 48px !important; }
+      #hero { padding-top: 48px !important; }
+      .hero-brand img { height: 36px !important; }
+      .why-grid { grid-template-columns: 1fr !important; }
+      .eq-grid { grid-template-columns: 1fr 1fr !important; }
+    }
+
+    </style>
   <!-- ═══════════════════════════════════════════════
        PERFORMANCE & CRAWL HINTS
   ═══════════════════════════════════════════════ -->
