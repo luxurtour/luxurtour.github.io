@@ -3800,7 +3800,7 @@ const translations = {
     cli6_title: 'Annunci Immobiliari', cli6_desc: 'Annunci immobiliari premium e portali di lusso',
     cli7_title: 'Architettura e Interior Design', cli7_desc: 'Studi professionali che mostrano progetti con fotografia premium',
     cli8_title: 'Location per Eventi', cli8_desc: 'Spazi per matrimoni, eventi aziendali e incontri esclusivi',
-    cli9_title: 'Ristoranti e Spa', cli9_desc: 'Location di ristorazione e benessere di lusso',
+    cli9_title: 'Aziende di Costruzione', cli9_desc: 'Sviluppatori e imprese di costruzione che mostrano progetti completati',
     cli10_title: 'Grandi Complessi Residenziali', cli10_desc: 'Sviluppi multi-unità e comunità residenziali di alto livello',
     q_prop_name_ph: 'es. Villa Rossi',
     q_areas_ph: 'es. Lobby, 12 camere, terrazza sul tetto, ristorante, spa, area piscina esterna…',
@@ -4213,11 +4213,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   /* Card data matching the desktop svc-rows */
   var cards = [
-    { label: '360° Photography',    title: '360° Panoramic Experiences',   desc: 'Fully immersive virtual tours of your property, allowing potential guests to explore every room and outdoor space — optimised for web, mobile and VR.', img: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=800&q=80', action: function(){ openModal('svc360'); },   modalId: 'modal-svc360',  labelKey: 'mob_label_360',   titleKey: 'mob_title_360',   descKey: 'mob_desc_360' },
-    { label: 'Photography',         title: 'High-End Property Photography', desc: 'High-end photography that captures the essence and luxury of your property with stunning detail — from interiors to lifestyle and atmosphere.',        img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', action: function(){ openModal('svcPhoto'); },  modalId: 'modal-svcPhoto', labelKey: 'mob_label_photo',  titleKey: 'mob_title_photo',  descKey: 'mob_desc_photo' },
-    { label: 'Video Production',    title: 'Cinematic Property Films',      desc: 'Cinematic videos that tell your property\'s story and create emotional connections — from highlight reels and brand films to social media content.',     img: 'https://images.unsplash.com/photo-1585399000684-d2f72660f092?w=800&q=80', action: function(){ openModal('svcVideo'); },  modalId: 'modal-svcVideo', labelKey: 'mob_label_video',  titleKey: 'mob_title_video',  descKey: 'mob_desc_video' },
-    { label: 'Drone Footage',       title: 'Spectacular Aerial Perspectives',desc: 'Spectacular aerial perspectives showcasing your property\'s location, architecture and surroundings — shot by licensed drone pilots.',               img: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=800&q=80', action: function(){ openModal('svcDrone'); },  modalId: 'modal-svcDrone', labelKey: 'mob_label_drone',  titleKey: 'mob_title_drone',  descKey: 'mob_desc_drone' },
-    { label: '3D Virtual Tours',    title: 'Interactive 3D Property Tours', desc: 'Interactive 3D tours that allow guests to explore your property in an engaging and immersive way — with accurate spatial depth and full navigation.',    img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80', action: function(){ openModal('svc3D'); },    modalId: 'modal-svc3D',   labelKey: 'mob_label_3d',    titleKey: 'mob_title_3d',    descKey: 'mob_desc_3d' },
+    { label: '360° Photography',    title: '360° Panoramic Experiences',   desc: 'Fully immersive virtual tours of your property, allowing potential guests to explore every room and outdoor space — optimised for web, mobile and VR.', img: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=800&q=80', action: function(){ openModal('svc360'); },   modalId: 'modal-svc360',  labelKey: 'mob_label_360',   titleKey: 'mob_title_360',   descKey: 'mob_desc_360', btnKey:'svc_explore'},
+    { label: 'Photography',         title: 'High-End Property Photography', desc: 'High-end photography that captures the essence and luxury of your property with stunning detail — from interiors to lifestyle and atmosphere.',        img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', action: function(){ openModal('svcPhoto'); },  modalId: 'modal-svcPhoto', labelKey: 'mob_label_photo',  titleKey: 'mob_title_photo',  descKey: 'mob_desc_photo', btnKey:'svc_explore'},
+    { label: 'Video Production',    title: 'Cinematic Property Films',      desc: 'Cinematic videos that tell your property\'s story and create emotional connections — from highlight reels and brand films to social media content.',     img: 'https://images.unsplash.com/photo-1585399000684-d2f72660f092?w=800&q=80', action: function(){ openModal('svcVideo'); },  modalId: 'modal-svcVideo', labelKey: 'mob_label_video',  titleKey: 'mob_title_video',  descKey: 'mob_desc_video', btnKey:'svc_explore'},
+    { label: 'Drone Footage',       title: 'Spectacular Aerial Perspectives',desc: 'Spectacular aerial perspectives showcasing your property\'s location, architecture and surroundings — shot by licensed drone pilots.',               img: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=800&q=80', action: function(){ openModal('svcDrone'); },  modalId: 'modal-svcDrone', labelKey: 'mob_label_drone',  titleKey: 'mob_title_drone',  descKey: 'mob_desc_drone', btnKey:'svc_explore'},
+    { label: '3D Virtual Tours',    title: 'Interactive 3D Property Tours', desc: 'Interactive 3D tours that allow guests to explore your property in an engaging and immersive way — with accurate spatial depth and full navigation.',    img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80', action: function(){ openModal('svc3D'); },    modalId: 'modal-svc3D',   labelKey: 'mob_label_3d',    titleKey: 'mob_title_3d',    descKey: 'mob_desc_3d', btnKey:'svc_explore'},
     { label: 'Bespoke Solutions',   title: 'Customise Your Service',        desc: 'Have a unique vision? We design bespoke visual solutions — combining photography, video, drone and 3D tours — tailored to your property and goals.',      img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80', action: function(){ openQuestionnaire('svcCustom','Custom Service'); }, btn: 'Start Your Brief', btnKey: 'custom_btn', modalId: null, labelKey: 'mob_label_custom', titleKey: 'mob_title_custom', descKey: 'mob_desc_custom' },
   ];
 
@@ -4233,6 +4233,8 @@ window.addEventListener('DOMContentLoaded', () => {
   function build() {
     if (built) return;
     built = true;
+
+    if (typeof setLang === 'function') setLang(currentLang);
 
     var section = document.getElementById('services');
     var svcTrack = document.getElementById('svcTrack');
@@ -4318,6 +4320,8 @@ window.addEventListener('DOMContentLoaded', () => {
       el.style.height = cardH + 'px';
       /* Initial stacked position: card i sits at PEEK*i from top */
       el.style.top = (i * PEEK) + 'px';
+
+      if (typeof setLang === 'function') setLang(currentLang);
     });
 
     /* Track height = one card scroll-slot per card */
