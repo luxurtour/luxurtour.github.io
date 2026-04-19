@@ -2702,7 +2702,7 @@ document.addEventListener('keydown', function(e) {
       <textarea name="message" class="fi" data-i18n-ph="form_message" placeholder="Tell us about your project..."></textarea>
       <button type="submit" class="btn-send" data-i18n="form_btn">Send Message</button>
 </form>
-<div id="form-success" style="display:none;margin-top:16px;padding:14px 18px;background:#e8f5ee;border:1.5px solid #c8e6d5;border-radius:10px;color:#05301D;font-weight:600;font-size:.9rem;">
+<div id="form-success" ... data-i18n="form_success" style="display:none;margin-top:16px;padding:14px 18px;background:#e8f5ee;border:1.5px solid #c8e6d5;border-radius:10px;color:#05301D;font-weight:600;font-size:.9rem;">
   ✓ Message sent! We'll get back to you within 24 hours.
 </div>
     </div>
@@ -3359,10 +3359,28 @@ const calState = {};
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const ALL_SLOTS = ['09:00','10:00','11:00','12:00','14:00','15:00','16:00','17:00'];
-function getSlots(day) {
-  const unavail = [ALL_SLOTS[day % 4], ALL_SLOTS[(day + 2) % 8]];
-  return ALL_SLOTS.map(s => ({ time: s, available: !unavail.includes(s) }));
+const GCAL_API_KEY = 'AIzaSyDXlrXZJWjWynsCrehokSfvCNkqO_iJaHY';
+const GCAL_ID = '46ff77704a2d47835051d56e02398fea6f643f4942dd7338b76f266eee9378d1@group.calendar.google.com';
+
+async function getSlots(day) {
+  return ALL_SLOTS.map(s => ({ time: s, available: true }));
 }
+
+async function fetchBusySlots(year, month, day) {
+  const date = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  const timeMin = encodeURIComponent(`${date}T00:00:00+02:00`);
+  const timeMax = encodeURIComponent(`${date}T23:59:59+02:00`);
+  const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GCAL_ID)}/events?key=${GCAL_API_KEY}&timeMin=${timeMin}&timeMax=${timeMax}&singleEvents=true`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    const busyTimes = (data.items || []).map(e => e.start.dateTime ? e.start.dateTime.substring(11,16) : null).filter(Boolean);
+    return ALL_SLOTS.map(s => ({ time: s, available: !busyTimes.includes(s) }));
+  } catch(e) {
+    return ALL_SLOTS.map(s => ({ time: s, available: true }));
+  }
+}
+
 function initCal(id) {
   const now = new Date();
   calState[id] = { year: now.getFullYear(), month: now.getMonth(), selectedDate: null, selectedTime: null };
@@ -3393,21 +3411,45 @@ function renderCal(id) {
   }
   renderSlots(id);
 }
-function selectDay(id, day) { calState[id].selectedDate = day; calState[id].selectedTime = null; renderCal(id); updateConfirmBtn(id); }
+function selectDay(id, day) { 
+  calState[id].selectedDate = day; 
+  calState[id].selectedTime = null; 
+  renderCal(id); 
+  updateConfirmBtn(id);
+  const s = calState[id];
+  fetchBusySlots(s.year, s.month, day).then(slots => {
+    const container = document.getElementById('time-slots-' + id);
+    container.innerHTML = '';
+    slots.forEach(slot => {
+      const el = document.createElement('button');
+      el.className = 'time-slot' + (slot.available ? '' : ' unavailable');
+      el.textContent = slot.time;
+      el.disabled = !slot.available;
+      if (slot.available) el.onclick = () => selectTime(id, slot.time);
+      container.appendChild(el);
+    });
+  });
+}
+
 function renderSlots(id) {
   const s = calState[id];
   const container = document.getElementById('time-slots-' + id);
   container.innerHTML = '';
   if (!s.selectedDate) { container.innerHTML = '<span style="font-size:.82rem;color:#aaa;">' + ((translations[currentLang]||translations.en).cal_select_date||'Select a date first') + '</span>'; updateSummary(id); return; }
-  getSlots(s.selectedDate).forEach(slot => {
-    const el = document.createElement('button');
-    el.className = 'time-slot' + (slot.available ? '' : ' unavailable') + (s.selectedTime === slot.time ? ' selected' : '');
-    el.textContent = slot.time; el.disabled = !slot.available;
-    if (slot.available) el.onclick = () => selectTime(id, slot.time);
-    container.appendChild(el);
+  container.innerHTML = '<span style="font-size:.82rem;color:#aaa;">Loading...</span>';
+  fetchBusySlots(s.year, s.month, s.selectedDate).then(slots => {
+    container.innerHTML = '';
+    slots.forEach(slot => {
+      const el = document.createElement('button');
+      el.className = 'time-slot' + (slot.available ? '' : ' unavailable') + (s.selectedTime === slot.time ? ' selected' : '');
+      el.textContent = slot.time; el.disabled = !slot.available;
+      if (slot.available) el.onclick = () => selectTime(id, slot.time);
+      container.appendChild(el);
+    });
+    updateSummary(id);
   });
-  updateSummary(id);
 }
+
 function selectTime(id, time) { calState[id].selectedTime = time; renderSlots(id); updateSummary(id); updateConfirmBtn(id); }
 function updateSummary(id) {
   const s = calState[id];
@@ -3483,6 +3525,28 @@ function confirmBooking(id) {
   const sqmEl = document.getElementById('bsqm-' + id);
   if (sqmEl && !sqmEl.value.trim()) { const t = translations[currentLang]||translations.en; alert(t.booking_sqm + ' required.'); return; }
   if (!name || !email || !phone || !region) { const t = translations[currentLang]||translations.en; alert(t.booking_name + ', ' + t.booking_email + ', ' + t.booking_phone + ', ' + t.booking_region + ' required.'); return; }
+
+  const s = calState[id];
+  const selectedDate = s && s.selectedDate ? s.year + '-' + String(s.month + 1).padStart(2, '0') + '-' + String(s.selectedDate).padStart(2, '0') : null;
+  const selectedTime = s ? s.selectedTime : null;
+  const pack = document.getElementById('badge-' + id) ? document.getElementById('badge-' + id).textContent : '';
+
+  fetch('https://hook.eu1.make.com/srlnh3hszhqs6z8k467o6fz0ngrngo4d', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      phone: phone,
+      region: region,
+      sqm: sqmEl ? sqmEl.value.trim() : '',
+      service: id,
+      pack: pack,
+      date: selectedDate,
+      time: selectedTime
+    })
+  }).catch(err => console.error('Booking webhook error:', err));
+
   document.getElementById('form-' + id).style.display = 'none';
   document.getElementById('success-' + id).classList.add('show');
 }
@@ -3572,6 +3636,7 @@ const translations = {
     form_title: 'Send us a message',
     form_name: 'Your Name', form_email: 'Email Address', form_phone: 'Phone Number', form_location: 'Location',
     form_btn: 'Send Message',
+    form_success: 'Message sent! We\'ll get back to you within 24 hours.',
     form_message: 'Tell us about your project...',
     // CUSTOM CARD
     custom_title: 'Customise Your Service',
@@ -3754,6 +3819,7 @@ const translations = {
     form_title: 'Inviaci un messaggio',
     form_name: 'Nome e Cognome', form_email: 'Indirizzo Email', form_phone: 'Numero di Telefono', form_location: 'Posizione',
     form_btn: 'Invia Messaggio',
+    form_success: 'Messaggio inviato! Ti risponderemo entro 24 ore.',
     form_message: 'Raccontaci del tuo progetto...',
     // CUSTOM CARD
     custom_title: 'Personalizza il Tuo Servizio',
@@ -3925,6 +3991,7 @@ const translations = {
     form_title: 'Envíanos un mensaje',
     form_name: 'Nombre Completo', form_email: 'Correo Electrónico', form_phone: 'Número de Teléfono', form_location: 'Ubicación',
     form_btn: 'Enviar Mensaje',
+    form_success: 'Mensaje enviado! Te responderemos en 24 horas.',
     form_message: 'Cuéntanos sobre tu proyecto...',
     // CUSTOM CARD
     custom_title: 'Personaliza Tu Servicio',
