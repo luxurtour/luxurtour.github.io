@@ -8,4 +8,12 @@
     <loc>https://www.luxurtour.com/form/</loc>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://www.luxurtour.com/it/</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.luxurtour.com/es/</loc>
+    <priority>0.9</priority>
+  </url>
 </urlset>
